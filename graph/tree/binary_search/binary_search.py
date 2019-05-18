@@ -1,76 +1,81 @@
 #!/usr/bin/python
 
 class Node:
+  key        = None
   val        = None
   leftChild  = None
   rightChild = None
 
-  def __init__(this, val = None):
-    if val:
-      this.val = val
+  def __init__(this, key = None, val = None):
+    if val and not key:
+      raise Exception("val must have a key")
 
-  def insert(this, val):
-    print("insert [this={}, val={}]".format(this, val))
-    # if node has no current value, set the value to val
-    if not this.val:
-      this.val = val
+    this.key = key
+    this.val = val
 
-    # If val is < the current node, go to the left child
-    elif val < this.val:
+  def insert(this, key, val):
+    print("insert [this={}, key={}, val={}]".format(this, key, val))
+    # if node has no current key, set the value to val
+    if not this.key:
+      this.key = key
+      this.val = val 
+
+    # If key is < the current node, go to the left child
+    elif key < this.key:
       if not this.leftChild:
-        this.leftChild = Node(val)
+        this.leftChild = Node(key, val)
       else:
-        this.leftChild.insert(val)
+        this.leftChild.insert(key, val)
    
-    # if val is >= the current node, go to the right child
-    elif val >= this.val:
+    # if key is >= the current node, go to the right child
+    elif key >= this.key:
       if not this.rightChild:
-        this.rightChild = Node(val)
+        this.rightChild = Node(key, val)
       else:
-        this.rightChild.insert(val)
+        this.rightChild.insert(key, val)
  
 
-  def find(this, val):
+  def find(this, key):
     pass
 
-  def remove(this, val):
+  def remove(this, key):
     pass
 
   def min(this):
     """Return left-most node"""
     if not this.leftChild:
-      return this.val
+      return this
    
     return this.leftChild.min() 
 
   def max(this):
     """Return right-most node"""
     if not this.rightChild:
-      return this.val
+      return this
 
     return this.rightChild.max()
 
   def __str__(this):
-    return "val={}".format(this.val)
+    return "key={}, val={}".format(this.key, this.val)
  
   def printInOrder(this):
     """Traverses the tree in order resulting in a sorted sequence of values"""
-    if not this.val:
+    if not this.key:
       print("Empty.")
 
     if this.leftChild:
       this.leftChild.printInOrder()
 
-    print(this.val)
+    print(this)
 
     if this.rightChild:
       this.rightChild.printInOrder()
  
   def printPreOrder(this):
-    if not this.val:
+    if not this.key:
       print("Empty.")
   
-    print this.val
+    print this
 
     if this.leftChild:
       this.leftChild.printPreOrder()   
@@ -79,7 +84,7 @@ class Node:
       this.rightChild.printPreOrder()
 
   def printPostOrder(this):
-    if not this.val:
+    if not this.key:
       print("Empty.")
 
     if this.leftChild:
@@ -88,14 +93,14 @@ class Node:
     if this.rightChild:
       this.rightChild.printPostOrder()
   
-    print(this.val)
+    print(this)
     
 if __name__ == "__main__":
   tree = Node()
 
-  tree.insert(5)
-  tree.insert(50)
-  tree.insert(20)
+  tree.insert(5, "five")
+  tree.insert(50, "fifty")
+  tree.insert(20, "twenty")
 
   tree.printInOrder()
   tree.printPreOrder()
