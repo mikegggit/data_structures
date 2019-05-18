@@ -33,12 +33,34 @@ class Node:
         this.rightChild = Node(key, val)
       else:
         this.rightChild.insert(key, val)
- 
 
   def find(this, key):
-    pass
+    print("find [key={}, this.key={}]".format(key, this.key))
+    if not key:
+      return None
 
+    if key == this.key:
+      return this
+
+    if key < this.key:
+      if not this.leftChild:
+        return None
+      else:
+        return this.leftChild.find(key)
+    else:
+      if not this.rightChild:
+        return None
+      else:
+        return this.rightChild.find(key)
+      
   def remove(this, key):
+    if not key:
+      return None
+
+    if key == this.key:
+      # no children
+      
+    
     pass
 
   def min(this):
@@ -98,9 +120,11 @@ class Node:
 if __name__ == "__main__":
   tree = Node()
 
-  tree.insert(5, "five")
+  tree.insert(100, "one hundred")
   tree.insert(50, "fifty")
-  tree.insert(20, "twenty")
+  tree.insert(10, "ten")
+  tree.insert(5, "five")
+  tree.insert(75, "seventy five")
 
   tree.printInOrder()
   tree.printPreOrder()
@@ -108,3 +132,5 @@ if __name__ == "__main__":
 
   print("min()={}".format(tree.min()))
   print("max()={}".format(tree.max()))
+
+  print("find(5)={}".format(tree.find(75)))
