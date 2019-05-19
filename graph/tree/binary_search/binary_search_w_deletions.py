@@ -39,16 +39,19 @@ class Node:
 
     if this.data is None:  
       this.data = data               # tree is empty   
+      return this
 
     elif data < this.data:           # new < current
       if this.left is None:          
         this.left = Node(data, this)
+        return this.left
       else:
         this.left.insert(data)   
 
     else:
       if this.right is None:         # new >= current
         this.right = Node(data, this)
+        return this.right
       else:
         this.right.insert(data)
       
@@ -94,7 +97,7 @@ class Node:
       return None
     
     if data == this.data:           # found the node
-      return this.data
+      return this
     elif data < this.data:          # try searching left
       if this.left is None:
         return None
@@ -108,13 +111,13 @@ class Node:
 
   def min(this):
     if this.left is None:
-      return this.data
+      return this
     else:
       return this.left.min()
 
   def max(this):
     if this.right is None:
-      return this.data
+      return this
     else:
       return this.right.max()
 
@@ -131,7 +134,73 @@ class Node:
       return hl + 1
     else:
       return hr + 1
-       
+
+  def remove(this, data):
+    """Removes data from tree.
+
+    Find node...
+    Remove...
+    """
+    print("remove [data={}]".format(data))
+    nodeDel = this.find(data)
+
+    if nodeDel is None:
+      return False
+
+    if nodeDel.left and nodeDel.right:
+     
+      # if two children, find min right, copy value to current, and delete min
+      nodeMinRight = nodeDel.right.min()
+      nodeMinRightParent = nodeMinRight.parent
+      nodeDel.data = nodeMinRight.data
+
+      return nodeMinRight.remove(nodeMinRight.data)
+
+    elif nodeDel.left:
+      print("left")
+      nodeDelParent = nodeDel.parent
+      if nodeDelParent.left and nodeDelParent.left.data == nodeDel.data:
+        nodeDelParent.left = nodeDel.left
+        nodeDel.left.parent = nodeDelParent
+        return True
+      elif nodeDelParent.right and nodeDelParent.right.data == nodeDel.data:
+        nodeDelParent.right = nodeDel.left
+        nodeDel.left.parent = nodeDelParent
+        return True
+
+    elif nodeDel.right:
+      print("right")
+      nodeDelParent = nodeDel.parent
+      if nodeDelParent.left and nodeDelParent.left.data == nodeDel.data:
+        nodeDelParent.left = nodeDel.right
+        nodeDel.right.parent = nodeDelParent
+        return True
+      elif nodeDelParent.right and nodeDelParent.right.data == nodeDel.data:
+        nodeDelParent.right = nodeDel.right
+        nodeDel.right.parent = nodeDelParent
+        return True
+
+    else:              # No children, just delete the node
+      print("no children")
+      print(nodeDel)
+      nodeDelParent = nodeDel.parent
+      if nodeDelParent.left and nodeDelParent.left.data == nodeDel.data:
+        nodeDelParent.left = None
+        return True
+      elif nodeDelParent.right and nodeDelParent.right.data == nodeDel.data:
+        nodeDelParent.right = None
+        return True
+
+  
+  def __str__(this):
+    result="Node [data='{}', parent='{}']"
+    if this.data is None:
+      return result.format("x")
+
+    if this.parent is None:
+      return result.format(this.data, "x")
+    
+    return result.format(this.data, this.parent.data)
 if __name__ == "__main__":
   tree = Node()
 
@@ -139,15 +208,9 @@ if __name__ == "__main__":
   tree.insert(Person(5, "Jane"))
   tree.insert(Person(7, "Fred"))
   tree.insert(Person(3, "Betsy"))
-  tree.insert(Person(100, "Laura"))
+  print(tree.insert(Person(100, "Laura")))
   tree.insert(Person(200, "Steve"))
   tree.insert(Person(300, "Steve"))
-  tree.insert(Person(400, "Steve"))
-  tree.insert(Person(500, "Steve"))
-  tree.insert(Person(600, "Steve"))
-  tree.insert(Person(700, "Steve"))
-  tree.insert(Person(800, "Steve"))
-  tree.insert(Person(900, "Steve"))
   tree.insert(Person(150, "Mary"))
   tree.insert(Person(175, "Stewie"))
 
@@ -160,3 +223,15 @@ if __name__ == "__main__":
   print(tree.height())
 
   print(tree.find(Person(200)))
+  tree.remove(Person(10))
+  tree.printInOrder()
+  tree.remove(Person(150))
+  tree.printInOrder()
+  tree.remove(Person(100))
+  tree.printInOrder()
+  tree.remove(Person(300))
+  tree.printInOrder()
+  tree.remove(Person(175))
+  tree.printInOrder()
+  tree.remove(Person(5))
+  tree.printInOrder()

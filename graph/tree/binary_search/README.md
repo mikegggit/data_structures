@@ -19,9 +19,11 @@ remove(val)
 removeMin()
 removeMax()
 find(val)
+contains(val)
 max()
 min()
-
+findNextLargest(val)
+findNextSmallest(val)
 
 Traversal
 ---------
@@ -45,4 +47,23 @@ Not necessarily balanced.
 
 An unbalanced tree leads to worst case performance of some operations approaching O(n).
 
+A BST is most unbalanced when nodes are almost sorted.
+
 For improved performance and a more balanced tree, at the expense of a more complex implementation, use AVL and Red / Black trees.
+
+BST is most efficient when the tree is balanced.
+
+insert(val) -> O(N)
+	Worst case, nodes are inserted in sorted order, leading to a high tree.  
+remove(val) -> O(N)
+	Worst case scenario, nodes were stored in sorted order, leading to a high tree.  
+	To delete, need to first find the node to delete, then...
+		
+		If...
+		...no children, remove node
+		...one child, replace node to be removed w/ the child
+		...two children, replace node to remove w/ next successor (??? or predecessor???)
+
+find(val) -> O(N)
+	See insert.
+	
