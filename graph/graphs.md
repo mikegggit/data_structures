@@ -10,10 +10,11 @@ A node which may or may not be associated with other vertex(es).
 
 In a connected graph, every vertex is associated with at least one other vertex.
 
-The degree of a vertex is the number of adjacent vertices associated with the vertex.  A loop is counted twice towards degree.
+The degree of a vertex is the number of adjacent vertices associated with the vertex.  A loop is counted twice towards degree.  Degree can be considered the number of lines touching the vertex.
+
 
 ### Edge
-An association between two vertices.  
+An association between two vertices, or in the case of a loop, just one.  
 
 May be either ordered (directed) or unordered (undirected).
 
@@ -129,7 +130,7 @@ Requires more time than a matrix representation to determine whether a specific 
 
 
 ### Matrix
-Space complexity of V^2.
+Space complexity of O(V^2).
 
 Traditionally implemented as a 2D array.
 
@@ -180,20 +181,19 @@ Matrix:
     Matrix: O(1)
 
 * removeEdge(a, b)
-    Adjacency list: O(E).  Visit the adjacency list for both source and tgt vertexes and remove the entry.
+    Adjacency list: O(V + E).  Visits each vertex, then traverses each adjacency list searching for edges to remove.
 
-    Matrix: O(1). Remove the entry in both (a, b) and (b, a)
+    Matrix: O(1). Remove the entry in (a, b), and (b, a) if undirected.
 
 * adjacent(a, b)
-    Adjacency list: O(E).  Visit the source list and search the adjacency list for b.
+    Adjacency list: O(V).  Visit the source list and search the adjacency list for b.  O(V) since there are at most V-1 edges to search through
 
     Matrix: O(1). Return value of (a, b)
 
-
 * neighbors(a)
-    Adjacency list: O(1).  returns all entries in adjacency list for a.
+    Adjacency list: O(1).  returns all entries in adjacency list for a.  O(1) since this is just returning the adjacenty list stored for a.
 
-    Matrix:  O(V) For entry a, need to travers all possible adjacents (vertices) to find those having a value of 1.  
+    Matrix:  O(V) For entry a, need to travers all possible adjacents (vertices) to find those having a value of 1.  O(V) since there at most V-1 possible vertices to search.
 
 * getVertexValue(a)
 	Adjacency list: O(1)

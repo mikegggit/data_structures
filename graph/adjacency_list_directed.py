@@ -2,43 +2,77 @@
 
 
 class GraphAL():
-  """An undirected graph.
+  """An directed graph.
   
   Models vertices as dictionary keys.
 
-  Adjacent nodes, and hence edges, are modeled as entries in an adjacency set.
+  Adjacent nodes (edges) are modeled as entries in an adjacency set.
 
   An adjacency set prevents having multiple edges between two nodes.
-
-  Each edge is represented twice, in each vertex's adjacency set.
   """
-  v=None
+  m=None
 
   def __init__(this):
-    this.v = {}
+    this.m = {}
 
-  def addVertex(this, n):
-    if not n in this.v:
-      this.v[n] = set()
+  def addVertex(this, v):
+    """
+    O(1)
+    """
+    if not v in this.m:
+      this.m[v] = set()
+
+  def removeVertex(this, v):
+    """ 
+    O(V + E)
+
+    V to iterate over every vertex.
+
+    E to iterate over every adjacency list.
+
+    Here, we're simply removing the vertes and hence leaving it to the runtime to free the memory.
+    """
+    this.m.pop(v)
+    for a in this.m.values():
+      if v in a:
+        a.remove(v)
 
   def addEdge(this, a, b):
-    """Registers undirected edge with both vertex a and b"""
-    if not a in this.v:
-      this.v[a]=set()
-    this.v[a].add(b)
-    if not b in this.v:
-      this.v[b]=set()
-    this.v[b].add(a)
- 
+    """
+    O(1)
+  
+    Registers directed edge with only a.
+    """
+    if not a in this.m:
+      this.m[a]=set()
+    this.m[a].add(b)
+
+  def adjacent(this, a, b):
+    """
+    O(V) since there are up to V-1 possible edges that will need to be looked through
+    to determine whether or not b is incident to a.
+    """ 
+    if not a in this.m:
+      return False
+    return b in this.m[a]
+
+  def neighbors(this, a):
+    """
+    O(1)
+    """
+    if not a in this.m:
+      return None
+    return this.m[a]
+
   def vertices(this):
-    return [k for k in this.v.keys()]
+    return [k for k in this.m.keys()]
 
   def printEdges(this, n):
-    for t in this.v[n]:
+    for t in this.m[n]:
       print("Edge [v1={}, v2={}]".format(n, t))
 
   def print(this):
-    for i, j in this.v.items():
+    for i, j in this.m.items():
       print("{} => {}".format(i, ("None" if len(j) == 0 else j)))
 
 if __name__ == "__main__":
@@ -53,26 +87,34 @@ if __name__ == "__main__":
    /   \|
   D     E
   """
-  """
-  g.addVertex("A")
-  g.addVertex("B")
-  g.addVertex("C")
-  g.addVertex("D")
-  g.addVertex("E")
-  g.addVertex("F")
-  """
-
-  print(g.vertices())
-
   g.addEdge("A", "C")
   g.addEdge("D", "C")
   g.addEdge("B", "C")
   g.addEdge("C", "E")
   g.addEdge("B", "E")
 
+  g.print()
   print(g.vertices())
   g.printEdges("C")
+ 
+  assert set(["C", "E"]) == g.neighbors("B")
 
   g.addVertex("F")
   print(g.vertices())
   g.print()
+
+  
+  assert g.adjacent("A", "C")
+  assert not g.adjacent("A", "B")
+  assert g.adjacent("D", "C")
+  assert not g.adjacent("C", "D")
+  assert not g.adjacent("F", "E")
+  assert g.adjacent("B", "E")
+  assert not g.adjacent("E", "B")
+
+  g.removeVertex("C")
+
+  assert set(["E"]) == g.neighbors("B")
+  g.print()
+  assert not g.adjacent("A", "C")
+  assert not g.adjacent("C", "D")
