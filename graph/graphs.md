@@ -175,9 +175,9 @@ In many cases, complexity depends on how the graph is represented.
 Matrix:
 
 * addEdge(a, b)
-    Adjacency list: O()
+    Adjacency list: O(1)
 
-    Matrix:
+    Matrix: O(1)
 
 * removeEdge(a, b)
     Adjacency list: O(E).  Visit the adjacency list for both source and tgt vertexes and remove the entry.
@@ -193,7 +193,7 @@ Matrix:
 * neighbors(a)
     Adjacency list: O(1).  returns all entries in adjacency list for a.
 
-    Matrix:  O(V) For entry a, need to travers all vertices to find those having a value of 1
+    Matrix:  O(V) For entry a, need to travers all possible adjacents (vertices) to find those having a value of 1.  
 
 * getVertexValue(a)
 	Adjacency list: O(1)
