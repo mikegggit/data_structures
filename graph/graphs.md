@@ -42,6 +42,8 @@ A subset of a graph's edges (and related vertices) representing a graph.
 ### Root
 Relevant to trees, which are a type of acyclical undirected graph.
 
+Can also be considered relevant to graphs if referring to the starting node in a graph traversal as root.
+
 ### Spanning tree
 Relevant to a connected graph.
 
