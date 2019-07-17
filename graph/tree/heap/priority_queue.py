@@ -20,7 +20,6 @@ class MinHeap:
       return
 
     pi = this.parent(i)
-    print("i={}, pi={}".format(i, pi))
     if this.nodes[i][1] < this.nodes[pi][1]:
       this.swap(i, pi)
       this.heapifyUp(pi)
@@ -54,7 +53,6 @@ class MinHeap:
         this.swap(i, this.leftIdx(i))
           
   def swap(this, i, j):
-    print("swap [i, j]".format(i, j))
     tmp = this.nodes[i]
     this.nodes[i] = this.nodes[j]
     this.nodes[j] = tmp
