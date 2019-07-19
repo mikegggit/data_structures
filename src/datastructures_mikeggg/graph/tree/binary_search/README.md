@@ -39,6 +39,19 @@ Post-order
 # For each node, left child is printed first, then right child, then current node
 
 
+Removal
+-------
+Removing nodes in a BST is non-trivial.
+
+
+
+Implementation
+--------------
+Handling root deletion seems to require use of a wrapper class to store reference to the root node.
+
+Clients need to see changes to the root, hence a wrapper class.
+
+
 Analysis
 --------
 The performance of certain operations is O(h), where h is the height of the BST.
@@ -66,4 +79,4 @@ remove(val) -> O(N)
 
 find(val) -> O(N)
 	See insert.
-	
+

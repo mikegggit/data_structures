@@ -2,24 +2,27 @@ Graphs
 ======
 Reference-based non-linear structure that defines relationships between vertexes.
 
-Background
-----------
-
+Terms
+-----
 ### Vertex 
 A node which may or may not be associated with other vertex(es).  
 
-In a connected graph, every vertex is associated with at least one other vertex.
+In a connected graph, every vertex is associated with / connected to at least one other vertex.
 
-The degree of a vertex is the number of adjacent vertices associated with the vertex.  A loop is counted twice towards degree.
+The degree of a vertex is the number of adjacent vertices associated with the vertex.  A loop is counted twice towards degree.  Degree can be considered the number of lines touching the vertex.
+
 
 ### Edge
-An association between two vertices.  
+An association between two vertices, or in the case of a loop, just one.  
 
 May be either ordered (directed) or unordered (undirected).
 
 Arc - Directed edge
 
 Directed edges are considered ordered, as a -> b means something else from b -> a.
+
+### Back edge
+In a directed graph, either an edge from a node to itself or one of its ancestors (a node previously traversed in arriving at this node)
 
 ### Path
 A sequence of vertices connected by edges with no duplicate edges.
@@ -32,14 +35,33 @@ An acyclical graph is one in which it is impossible to arrive back at the starti
 ### Tree
 An acyclic connected graph.
 
-### Connected graph
-There is at least one path from every vertex to every other vertex.
-
 ### Subgraph
 A subset of a graph's edges (and related vertices) representing a graph.
 
+### Connected graph
+An undirected graph in which there is at least one path from every vertex to every other vertex.
+
+See Strongly-connected graph for a similar concept related to directed graphs.
+
+### Strongly-connected graph
+Relevant to a directed graph.
+
+True if every vertex is navigable / reachable from every other vertex.
+
+### Strongly-connected components
+In a directed graph, subgraphs which are themselves strongly connected, forming individual non-overlapping partitions within the parent graph.
+
+
+### Component
+A subgraph in which any two vertices are connected by paths, and which is connected to no other vertices in the supergraph.  In other words, it is itself connected, with no relationship to a supergraph other than its containment of vertices considered a part of the supergraph.
+
+A graph can have many components, each self contained and otherwise unrelated.
+
+
 ### Root
 Relevant to trees, which are a type of acyclical undirected graph.
+
+Can also be considered relevant to graphs if referring to the starting node in a graph traversal as root.
 
 ### Spanning tree
 Relevant to a connected graph.
@@ -129,7 +151,7 @@ Requires more time than a matrix representation to determine whether a specific 
 
 
 ### Matrix
-Space complexity of V^2.
+Space complexity of O(V^2).
 
 Traditionally implemented as a 2D array.
 
@@ -175,25 +197,24 @@ In many cases, complexity depends on how the graph is represented.
 Matrix:
 
 * addEdge(a, b)
-    Adjacency list: O()
+    Adjacency list: O(1)
 
-    Matrix:
+    Matrix: O(1)
 
 * removeEdge(a, b)
-    Adjacency list: O(E).  Visit the adjacency list for both source and tgt vertexes and remove the entry.
+    Adjacency list: O(V + E).  Visits each vertex, then traverses each adjacency list searching for edges to remove.
 
-    Matrix: O(1). Remove the entry in both (a, b) and (b, a)
+    Matrix: O(1). Remove the entry in (a, b), and (b, a) if undirected.
 
 * adjacent(a, b)
-    Adjacency list: O(E).  Visit the source list and search the adjacency list for b.
+    Adjacency list: O(V).  Visit the source list and search the adjacency list for b.  O(V) since there are at most V-1 edges to search through
 
     Matrix: O(1). Return value of (a, b)
 
-
 * neighbors(a)
-    Adjacency list: O(1).  returns all entries in adjacency list for a.
+    Adjacency list: O(1).  returns all entries in adjacency list for a.  O(1) since this is just returning the adjacenty list stored for a.
 
-    Matrix:  O(V) For entry a, need to travers all vertices to find those having a value of 1
+    Matrix:  O(V) For entry a, need to travers all possible adjacents (vertices) to find those having a value of 1.  O(V) since there at most V-1 possible vertices to search.
 
 * getVertexValue(a)
 	Adjacency list: O(1)

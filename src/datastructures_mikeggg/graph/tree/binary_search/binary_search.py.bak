@@ -1,0 +1,238 @@
+#!/usr/bin/python
+
+class BST:
+  root = None
+
+  def __init__(this):
+    print("BST::__init__")
+    this.root = Node()
+
+  def insert(this, key, val):
+    this.root.insert(key, val)
+
+  def remove(this, key):
+    this.root.remove(key)
+
+  def find(this, key):
+    return this.root.find(key)
+
+  def min(this):
+    return this.root.min()
+
+  def max(this):
+    return this.root.max()
+
+  def printInOrder(this):
+    this.root.printInOrder()
+
+  def printPreOrder(this):
+    this.root.printPreOrder()
+
+  def printPostOrder(this):
+    this.root.printPostOrder()
+
+  
+class Node:
+  key        = None
+  val        = None
+  parent     = None
+  leftChild  = None
+  rightChild = None
+
+  def __init__(this, key = None, val = None, parent = None):
+    if val and not key:
+      raise Exception("val must have a key")
+
+    this.key = key
+    this.val = val
+    this.parent = parent
+
+  def insert(this, key, val, parent = None):
+    print("insert [this={}, key={}, val={}]".format(this, key, val))
+    # if node has no current key, set the value to val
+    if not this.key:
+      this.key = key
+      this.val = val 
+
+    # If key is < the current node, go to the left child
+    elif key < this.key:
+      if not this.leftChild:
+        this.leftChild = Node(key, val, this)
+        print(this.leftChild)
+      else:
+        this.leftChild.insert(key, val)
+   
+    # if key is >= the current node, go to the right child
+    elif key >= this.key:
+      if not this.rightChild:
+        this.rightChild = Node(key, val, this)
+      else:
+        this.rightChild.insert(key, val)
+
+  def find(this, key):
+    print("find [key={}, this.key={}]".format(key, this.key))
+    if not key:
+      return None
+
+    if key == this.key:
+      return this
+
+    if key < this.key:
+      if not this.leftChild:
+        return None
+      else:
+        return this.leftChild.find(key)
+    else:
+      if not this.rightChild:
+        return None
+      else:
+        return this.rightChild.find(key)
+      
+  def remove(this, key):
+    print("remove [key={}]".format(key))
+    if not key:
+      return None
+
+    if key == this.key:
+      # Found item to remove
+      print("found key")
+      # Remove logic...
+      if not this.leftChild and not this.rightChild:
+        print("no children")
+        # ...no children
+        if not this.parent:
+          # root node
+          this.key = None
+          this.val = None
+        elif this.parent.leftChild.key == this.key:
+          this.parent.leftChild = None
+        else:
+          this.parent.rightChild = None          
+     
+      # ...two children
+      if this.leftChild and this.rightChild:
+        print("two children")
+        # find successor
+        node = this.next()
+
+        this = node
+        this.rightChild.remove(node.key)
+        return
+
+      # ...one child
+      if this.leftChild:
+        print("left child")
+        this.leftChild.parent = this.parent
+
+        if not this.parent:
+          print("left")
+          this = this.leftChild
+        elif this.parent.leftChild and this.parent.leftChild.key == this.key:
+          this.parent.leftChild = this.leftChild
+        else:
+          this.parent.rightChild = this.leftChild
+  
+        return
+
+      if this.rightChild:
+        print("right child")
+        this.rightChild.parent = this.parent
+        if not this.parent:
+          this = this.rightChild
+        elif this.parent.leftChild and this.parent.leftChild.key == this.key:
+          this.parent.leftChild = this.rightChild
+        else:
+          this.parent.rightChild = this.rightChild
+
+
+  def next(this, key):
+    print("next [key={}]".format(key))
+    
+    node = this.find(key)
+    if not node.rightChild:
+      return None
+    
+    return node.rightChild.min()
+
+  def previous(this, key):
+    print("previous [key={}]".format(key))
+ 
+    if not this.leftChild: 
+      return Nonde
+
+    return this.leftChild.max()
+ 
+  def min(this):
+    """Return left-most node"""
+    if not this.leftChild:
+      return this
+   
+    return this.leftChild.min() 
+
+  def max(this):
+    """Return right-most node"""
+    if not this.rightChild:
+      return this
+
+    return this.rightChild.max()
+
+  def __str__(this):
+    return "key={}, val={}, parent={}".format(this.key, this.val, this.parent)
+ 
+  def printInOrder(this):
+    """Traverses the tree in order resulting in a sorted sequence of values"""
+    if not this.key:
+      print("Empty.")
+
+    if this.leftChild:
+      this.leftChild.printInOrder()
+
+    print(this)
+
+    if this.rightChild:
+      this.rightChild.printInOrder()
+ 
+  def printPreOrder(this):
+    if not this.key:
+      print("Empty.")
+  
+    print this
+
+    if this.leftChild:
+      this.leftChild.printPreOrder()   
+
+    if this.rightChild:
+      this.rightChild.printPreOrder()
+
+  def printPostOrder(this):
+    if not this.key:
+      print("Empty.")
+
+    if this.leftChild:
+      this.leftChild.printPostOrder()
+
+    if this.rightChild:
+      this.rightChild.printPostOrder()
+  
+    print(this)
+    
+if __name__ == "__main__":
+  tree = BST()
+
+  tree.insert(100, "one hundred")
+  tree.insert(50, "fifty")
+  tree.insert(10, "ten")
+  tree.insert(5, "five")
+  tree.insert(75, "seventy five")
+
+  tree.printInOrder()
+
+  print("min()={}".format(tree.min()))
+  print("max()={}".format(tree.max()))
+
+  print("find(5)={}".format(tree.find(75)))
+
+  print(tree.find(100))
+  tree.remove(100)
+  print(tree.find(100))
+
