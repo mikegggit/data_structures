@@ -2,13 +2,12 @@ Graphs
 ======
 Reference-based non-linear structure that defines relationships between vertexes.
 
-Background
-----------
-
+Terms
+-----
 ### Vertex 
 A node which may or may not be associated with other vertex(es).  
 
-In a connected graph, every vertex is associated with at least one other vertex.
+In a connected graph, every vertex is associated with / connected to at least one other vertex.
 
 The degree of a vertex is the number of adjacent vertices associated with the vertex.  A loop is counted twice towards degree.  Degree can be considered the number of lines touching the vertex.
 
@@ -22,6 +21,9 @@ Arc - Directed edge
 
 Directed edges are considered ordered, as a -> b means something else from b -> a.
 
+### Back edge
+In a directed graph, either an edge from a node to itself or one of its ancestors (a node previously traversed in arriving at this node)
+
 ### Path
 A sequence of vertices connected by edges with no duplicate edges.
 
@@ -33,11 +35,28 @@ An acyclical graph is one in which it is impossible to arrive back at the starti
 ### Tree
 An acyclic connected graph.
 
-### Connected graph
-There is at least one path from every vertex to every other vertex.
-
 ### Subgraph
 A subset of a graph's edges (and related vertices) representing a graph.
+
+### Connected graph
+An undirected graph in which there is at least one path from every vertex to every other vertex.
+
+See Strongly-connected graph for a similar concept related to directed graphs.
+
+### Strongly-connected graph
+Relevant to a directed graph.
+
+True if every vertex is navigable / reachable from every other vertex.
+
+### Strongly-connected components
+In a directed graph, subgraphs which are themselves strongly connected, forming individual non-overlapping partitions within the parent graph.
+
+
+### Component
+A subgraph in which any two vertices are connected by paths, and which is connected to no other vertices in the supergraph.  In other words, it is itself connected, with no relationship to a supergraph other than its containment of vertices considered a part of the supergraph.
+
+A graph can have many components, each self contained and otherwise unrelated.
+
 
 ### Root
 Relevant to trees, which are a type of acyclical undirected graph.
